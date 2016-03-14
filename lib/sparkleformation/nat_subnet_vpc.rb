@@ -1,4 +1,4 @@
-SparkleFormation.new(:nat_subnet_vpc, :inherit => :public_subnet_vpc).overrides do
+SparkleFormation.new(:lazy_vpc__nat_subnet_vpc, :inherit => :public_subnet_vpc).overrides do
 
   description 'VPC with Public & NAT Subnets'
 
