@@ -21,12 +21,9 @@ SparkleFormation.new(:nat_subnet_vpc, :inherit => :public_subnet_vpc).overrides 
       type 'String'
       default ['10.0.1', index, '.0/24'].join
     end
-
   end
 
   dynamic!(:vpc_nat_routing, :nat_vpc,
-    :nat_subnet => "public_#{nat_zone}_subnet".to_sym,
-    :internet_route_table => ref!(:public_route_table),
+    :nat_subnet => ref!("public_#{nat_zone}_subnet".to_sym),
     :nat_route_table => ref!(:private_route_table))
-
 end
