@@ -21,6 +21,10 @@ SparkleFormation.new(:lazy_vpc__nat_subnet_vpc, :inherit => :public_subnet_vpc).
       type 'String'
       default ['10.0.1', index, '.0/24'].join
     end
+
+    outputs("#{['private_', zone.gsub('-', '_') ].join}_subnet".to_sym) do
+      value ref!("#{['private_', zone.gsub('-', '_') ].join}_subnet".to_sym)
+    end
   end
 
   dynamic!(:vpc_nat_routing, :nat_vpc,
