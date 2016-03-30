@@ -11,7 +11,7 @@ SparkleFormation.new(:lazy_vpc__nat_subnet_vpc, :inherit => :public_subnet_vpc).
 
   zones.each_with_index do |zone, index|
 
-    dynamic!(:subnet, ['private_', zone.gsub('-', '_') ].join,
+    dynamic!(:vpc_subnet, ['private_', zone.gsub('-', '_') ].join,
       :vpc_id => ref!(:vpc),
       :route_table => ref!(:private_route_table),
       :availability_zone => zone
