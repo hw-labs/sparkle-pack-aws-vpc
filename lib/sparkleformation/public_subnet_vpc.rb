@@ -26,7 +26,7 @@ SparkleFormation.new(:lazy_vpc__public_subnet_vpc).load(:base, :vpc).overrides d
   end
 
   outputs(:public_subnet_ids) do
-    value public_subnet_ids
+    value join!(public_subnet_ids, :options => { :delimiter => ',' })
   end
 
 end

@@ -33,7 +33,7 @@ SparkleFormation.new(:lazy_vpc__nat_subnet_vpc, :inherit => :public_subnet_vpc).
   end
 
   outputs(:private_subnet_ids) do
-    value private_subnet_ids
+    value join!(private_subnet_ids, :options => { :delimiter => ',' })
   end
 
   dynamic!(:vpc_nat_routing, :nat_vpc,
