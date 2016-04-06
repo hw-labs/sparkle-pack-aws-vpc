@@ -19,10 +19,10 @@ gem 'sfn'
 gem 'sparkle-pack-aws-vpc'
 ```
 
-Update your `.sfn` config file to ensure the SparklePack is loaded:
+Update your `.sfn` config file to ensure both the 'sparkle-pack-aws-availability-zones' and 'sparkle-pack-aws-vpc' SparklePacks are loaded:
 ```ruby
 Configuration.new do
-  sparkle_pack [ 'sparkle-pack-aws-vpc' ]
+  sparkle_pack [ 'sparkle-pack-aws-availability-zones', 'sparkle-pack-aws-vpc' ]
 end
 ```
 
