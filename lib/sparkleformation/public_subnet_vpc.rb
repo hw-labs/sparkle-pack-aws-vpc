@@ -74,7 +74,7 @@ SparkleFormation.new(:lazy_vpc__public_subnet_vpc).load(:aws_vpc_core).overrides
       value join!(public_subnet_ids, :options => { :delimiter => ',' })
     end
 
-    [ :public_route_table, :private_route_table, :internet_gateway ].each do |x|
+    [ :public_route_table, :internet_gateway ].each do |x|
       set!(x) do
         value ref!(x)
       end

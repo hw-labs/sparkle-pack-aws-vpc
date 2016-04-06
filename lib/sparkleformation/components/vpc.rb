@@ -93,8 +93,10 @@ SparkleFormation.component(:aws_vpc_core) do |_config ={}|
       value ref!(:vpc)
     end
 
-    vpc_cidr do
-      value ref!(:vpc_cidr)
+    [ :vpc_cidr, :private_route_table ].each do |x|
+      set!(x) do
+        value ref!(x)
+      end
     end
   end
 end
