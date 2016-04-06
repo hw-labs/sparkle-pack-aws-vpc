@@ -1,4 +1,4 @@
-SparkleFormation.new(:lazy_vpc__public_subnet_vpc).load(:base, :vpc).overrides do
+SparkleFormation.new(:lazy_vpc__public_subnet_vpc).load(:aws_vpc_core).overrides do
 
   description 'VPC with Public Subnets'
 

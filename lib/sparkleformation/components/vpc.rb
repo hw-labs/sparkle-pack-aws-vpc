@@ -1,10 +1,11 @@
-SparkleFormation.component(:vpc) do |_config ={}|
+SparkleFormation.component(:aws_vpc_core) do |_config ={}|
+  set!('AWSTemplateFormatVersion', '2010-09-09')
 
-  parameters(:vpc_cidr) do
-    description 'VPC Subnet'
-    type 'String'
-    default '10.0.0.0/16'
-  end
+  parameters do
+    stack_creator do
+      type 'String'
+      default ENV['USER']
+    end
 
   parameters(:dns_support) do
     description 'Enable VPC DNS Support'
