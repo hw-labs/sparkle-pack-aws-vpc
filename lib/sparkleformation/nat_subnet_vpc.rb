@@ -5,6 +5,9 @@ SparkleFormation.new(:lazy_vpc__nat_subnet_vpc, :inherit => :public_subnet_vpc).
   ## Access the list of available Availability Zones via registry entry.
   zones = registry!(:zones)
 
+  ## Instantiate an empty array to collect our private subnet IDs
+  private_subnet_ids = []
+
   nat_zone = zones.first.gsub('-','_')
   ## Iterate over each AZ creating a public subnet. Auto-generate
   ## Subnet CIDRs based on index.
@@ -25,9 +28,16 @@ SparkleFormation.new(:lazy_vpc__nat_subnet_vpc, :inherit => :public_subnet_vpc).
     outputs("#{['private_', zone.gsub('-', '_') ].join}_subnet".to_sym) do
       value ref!("#{['private_', zone.gsub('-', '_') ].join}_subnet".to_sym)
     end
+
+    private_subnet_ids.push(ref!(['private_', zone.gsub('-', '_'), '_subnet'].join.to_sym))
+  end
+
+  outputs(:private_subnet_ids) do
+    value join!(private_subnet_ids, :options => { :delimiter => ',' })
   end
 
   dynamic!(:vpc_nat_routing, :nat_vpc,
     :nat_subnet => ref!("public_#{nat_zone}_subnet".to_sym),
-    :nat_route_table => ref!(:private_route_table))
+    :nat_route_table => ref!(:private_route_table)
+  )
 end
