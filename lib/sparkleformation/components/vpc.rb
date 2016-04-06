@@ -75,60 +75,13 @@ SparkleFormation.component(:aws_vpc_core) do |_config ={}|
     end
   end
 
-  %w( public private ).each do |type|
-    resources("#{type}_route_table".to_sym) do
-      type 'AWS::EC2::RouteTable'
-      properties do
-        vpc_id ref!(:vpc)
-        tags _array(
-          -> {
-            key 'Name'
-            value join!(stack_name!, " #{type}")
-          }
-        )
-      end
+  outputs do
+    vpc_id do
+      value ref!(:vpc)
+    end
+
+    vpc_cidr do
+      value ref!(:vpc_cidr)
     end
   end
-
-  resources(:internet_gateway) do
-    type 'AWS::EC2::InternetGateway'
-    properties do
-      tags _array(
-        -> {
-          key 'Name'
-          value stack_name!
-        }
-      )
-    end
-  end
-
-  resources(:internet_gateway_attachment) do
-    type 'AWS::EC2::VPCGatewayAttachment'
-    properties do
-      internet_gateway_id ref!(:internet_gateway)
-      vpc_id ref!(:vpc)
-    end
-  end
-
-  resources(:public_subnet_internet_route) do
-    type 'AWS::EC2::Route'
-    properties do
-      destination_cidr_block '0.0.0.0/0'
-      gateway_id ref!(:internet_gateway)
-      route_table_id ref!(:public_route_table)
-    end
-  end
-
-  outputs(:vpc_id) do
-    value ref!(:vpc)
-  end
-
-  [ :vpc_cidr, :public_route_table, :private_route_table, :internet_gateway ].each do |x|
-    outputs do
-      set!(x) do
-        value ref!(x)
-      end
-    end
-  end
-
 end
