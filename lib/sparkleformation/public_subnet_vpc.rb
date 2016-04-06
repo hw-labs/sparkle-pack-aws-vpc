@@ -26,18 +26,16 @@ SparkleFormation.new(:lazy_vpc__public_subnet_vpc).load(:aws_vpc_core).overrides
   end
 
   resources do
-    %w( public private ).each do |type|
-      set!("#{type}_route_table".to_sym) do
-        type 'AWS::EC2::RouteTable'
-        properties do
-          vpc_id ref!(:vpc)
-          tags array!(
-            -> {
-              key 'Name'
-              value join!(stack_name!, " #{type}")
-            }
-          )
-        end
+    public_route_table do
+      type 'AWS::EC2::RouteTable'
+      properties do
+        vpc_id ref!(:vpc)
+        tags array!(
+          -> {
+            key 'Name'
+            value join!(stack_name!, " public")
+          }
+        )
       end
     end
 

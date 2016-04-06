@@ -73,6 +73,19 @@ SparkleFormation.component(:aws_vpc_core) do |_config ={}|
         dhcp_options_id ref!(:dhcp_options)
       end
     end
+
+    private_route_table do
+      type 'AWS::EC2::RouteTable'
+      properties do
+        vpc_id ref!(:vpc)
+        tags array!(
+          -> {
+            key 'Name'
+            value join!(stack_name!, " private")
+          }
+        )
+      end
+    end
   end
 
   outputs do
