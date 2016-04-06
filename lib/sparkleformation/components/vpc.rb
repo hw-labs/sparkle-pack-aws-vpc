@@ -7,62 +7,71 @@ SparkleFormation.component(:aws_vpc_core) do |_config ={}|
       default ENV['USER']
     end
 
-  parameters(:dns_support) do
-    description 'Enable VPC DNS Support'
-    type 'String'
-    default 'true'
-    allowed_values %w(true false)
-  end
+    vpc_cidr do
+      description 'VPC Subnet'
+      type 'String'
+      default '10.0.0.0/16'
+    end
 
-  parameters(:dns_hostnames) do
-    description 'Enable VPC DNS Hostname Support'
-    type 'String'
-    default 'true'
-    allowed_values %w(true false)
-  end
+    dns_support do
+      description 'Enable VPC DNS Support'
+      type 'String'
+      default 'true'
+      allowed_values %w(true false)
+    end
 
-  parameters(:instance_tenancy) do
-    description 'Enable VPC Instance Tenancy'
-    type 'String'
-    default 'default'
-    allowed_values %w(default dedicated)
-  end
+    dns_hostnames do
+      description 'Enable VPC DNS Hostname Support'
+      type 'String'
+      default 'true'
+      allowed_values %w(true false)
+    end
 
-  resources(:dhcp_options) do
-    type 'AWS::EC2::DHCPOptions'
-    properties do
-      domain_name 'ec2.internal'
-      domain_name_servers ['AmazonProvidedDNS']
-      tags _array(
-        -> {
-          key 'Name'
-          value stack_name!
-        }
-      )
+    instance_tenancy do
+      description 'Enable VPC Instance Tenancy'
+      type 'String'
+      default 'default'
+      allowed_values %w(default dedicated)
     end
   end
 
-  resources(:vpc) do
-    type 'AWS::EC2::VPC'
-    properties do
-      cidr_block ref!(:vpc_cidr)
-      enable_dns_support ref!(:dns_support)
-      enable_dns_hostnames ref!(:dns_hostnames)
-      instance_tenancy ref!(:instance_tenancy)
-      tags _array(
-        -> {
-          key 'Name'
-          value stack_name!
-        }
-      )
+  resources do
+    dhcp_options do
+      type 'AWS::EC2::DHCPOptions'
+      properties do
+        domain_name 'ec2.internal'
+        domain_name_servers ['AmazonProvidedDNS']
+        tags array!(
+          -> {
+            key 'Name'
+            value stack_name!
+          }
+        )
+      end
     end
-  end
 
-  resources(:vpc_dhcp_options_association) do
-    type 'AWS::EC2::VPCDHCPOptionsAssociation'
-    properties do
-      vpc_id ref!(:vpc)
-      dhcp_options_id ref!(:dhcp_options)
+    vpc do
+      type 'AWS::EC2::VPC'
+      properties do
+        cidr_block ref!(:vpc_cidr)
+        enable_dns_support ref!(:dns_support)
+        enable_dns_hostnames ref!(:dns_hostnames)
+        instance_tenancy ref!(:instance_tenancy)
+        tags array!(
+          -> {
+            key 'Name'
+            value stack_name!
+          }
+        )
+      end
+    end
+
+    vpc_dhcp_options_association do
+      type 'AWS::EC2::VPCDHCPOptionsAssociation'
+      properties do
+        vpc_id ref!(:vpc)
+        dhcp_options_id ref!(:dhcp_options)
+      end
     end
   end
 
