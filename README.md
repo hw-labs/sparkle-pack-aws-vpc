@@ -22,7 +22,7 @@ gem 'sparkle-pack-aws-vpc'
 Update your `.sfn` config file to ensure the SparklePack is loaded:
 ```ruby
 Configuration.new do
-  sparkle_pack [ 'sparkle-pack-aws-availability-zones' ]
+  sparkle_pack [ 'sparkle-pack-aws-vpc' ]
 end
 ```
 
