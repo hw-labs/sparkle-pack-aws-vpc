@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name = 'sparkle-pack-aws-vpc'
-  s.version = '0.1.6'
+  s.version = '0.2.0'
   s.licenses = ['MIT']
   s.summary = 'AWS VPC SparklePack'
   s.description = 'SparklePack to create a VPC on AWS'
